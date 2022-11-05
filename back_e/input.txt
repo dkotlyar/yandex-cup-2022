@@ -1,0 +1,15 @@
+2
+/lib/folder_1/
+/lib/folder_2/folder_3/
+7
+/lib/a.cpp
+/lib/folder_2/b.cpp
+/lib/folder_1/c.cpp
+/lib/folder_2/folder_4/d.cpp
+/lib/folder_1/folder_5/e.cpp
+/lib/folder_2/folder_3/folder_6/f.py
+/lib/folder_2/folder_3/g.cpp
+3
+/lib/
+/lib/folder_1/
+/lib/folder_2/
