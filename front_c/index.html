@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Triangulation</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=500, height=500" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .Map {
+        width: 500px;
+        height: 500px;
+        /*background: #ed7b00;*/
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="Map">
+    </div>
+
+    <script>
+      // const stations = [{
+      //   "id": 1,
+      //   "x": 100,
+      //   "y": 100,
+      //   "r": 100
+      // }, {
+      //   "id": 2,
+      //   "x": 350,
+      //   "y": 120,
+      //   "r": 180
+      // }, {
+      //   "id": 3,
+      //   "x": 150,
+      //   "y": 330,
+      //   "r": 180
+      // }, {
+      //   "id": 4,
+      //   "x": 410,
+      //   "y": 390,
+      //   "r": 150
+      // }];
+      //
+      // const stationIds = [
+      //   [1, 2],
+      //   [2, 3],
+      //   [3, 4]
+      // ]
+
+      function triangulation(stations, stationIds) {
+        let div = document.getElementsByClassName('Map').item(0)
+        let canvas = document.createElement('canvas')
+        canvas.width = div.clientWidth
+        canvas.height = div.clientHeight
+
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#ed7b00'
+          ctx.fillRect(0, 0, 500, 500)
+
+          ctx.fillStyle = '#000'
+          ctx.strokeStyle = '#000'
+          for (let bs of stations) {
+            ctx.beginPath()
+            ctx.ellipse(bs.x, bs.y, 10, 10, 0, 0, Math.PI*2)
+            ctx.fill()
+            ctx.beginPath()
+            ctx.ellipse(bs.x, bs.y, bs.r, bs.r, 0, 0, Math.PI*2)
+            ctx.stroke()
+          }
+
+          let color = [0, 0, 0]
+          for (let curStations of stationIds) {
+            curStations = curStations.map(id => {
+              return stations.filter(s => s.id === id).at(0)
+            })
+
+            let tmpCanvas = document.createElement('canvas')
+            tmpCanvas.width = canvas.width
+            tmpCanvas.height = canvas.height
+
+            const tmpCtx = tmpCanvas.getContext('2d');
+            if (tmpCtx) {
+              tmpCtx.fillStyle = 'rgb(' + color.join(',') + ')'
+
+              curStations.forEach((s, i) => {
+                if (i > 0) {
+                  tmpCtx.globalCompositeOperation="source-in"
+                }
+                tmpCtx.beginPath()
+                tmpCtx.ellipse(s.x, s.y, s.r, s.r, 0, 0, Math.PI * 2)
+                tmpCtx.fill()
+              })
+            }
+
+            color = color.map(c => c + 0x11)
+            ctx.drawImage(tmpCanvas, 0, 0)
+
+          }
+
+        }
+
+        div.append(canvas)
+      }
+
+      // triangulation(stations, stationIds)
+
+      window.data && triangulation(window.data.stations, window.data.stationIds)
+      addEventListener('load', (event) => {
+        window.onSolutionReady && window.onSolutionReady()
+      });
+    </script>
+  </body>
+</html>
