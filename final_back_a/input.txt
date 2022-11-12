@@ -1,0 +1,7 @@
+{"a": {"a": {"b": 123, "c": "value"}}, "b": {"a": {"b": 456, "c": null}}}
+5
+{"path": "*.b", "count": 2}
+{"path": "a.a.*", "count": 5}
+{"path": "b.*.c", "count": 1}
+{"path": "a.b.c.*", "count": 5}
+{"path": "a.a.*.b", "count": 2}
